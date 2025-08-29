@@ -1,0 +1,36 @@
+﻿@model projetoGloboClima.Models.ViewModels.LoginRequestViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<link rel="stylesheet" href="~/css/login/login.css" />
+
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow-lg p-4 rounded-4" style="width: 400px;">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-primary">Acesso ao Globo Clima</h2>
+            <p class="text-muted">Entre com suas credenciais para continuar</p>
+        </div>
+
+        <form method="post" asp-controller="User" asp-action="Logar">
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label fw-semibold">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="exemplo@empresa.com" type="email" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label fw-semibold">Senha</label>
+                <input asp-for="Password" class="form-control" placeholder="Digite sua senha" type="password" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 fw-semibold" value="logar">Entrar</button>
+
+            <div class="text-center mt-3">
+                <a href="#" class="text-decoration-none">Esqueceu a senha?</a>
+            </div>
+        </form>
+    </div>
+</div>

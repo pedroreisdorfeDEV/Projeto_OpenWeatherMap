@@ -1,0 +1,30 @@
+﻿body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    border: none;
+    background: #fff;
+    transition: transform 0.2s ease-in-out;
+}
+
+    .card:hover {
+        transform: scale(1.02);
+    }
+
+.btn-primary {
+    background-color: #0077cc;
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: #005fa3;
+    }
+
+a {
+    color: #0077cc;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }

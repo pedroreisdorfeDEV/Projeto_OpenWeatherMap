@@ -14,7 +14,7 @@ namespace projetoGloboClima.Shared.Utils
             _configuration = configuration;
         }
 
-        public string GenerateToken(string email, string userName, string idUser)
+        public string GenerateToken(string email, string userName, string userId)
         {
 
 
@@ -25,9 +25,9 @@ namespace projetoGloboClima.Shared.Utils
 
                 var claims = new[]
                 {
-                new Claim(ClaimTypes.Email, email),
+                 new Claim(ClaimTypes.Email, email),
                 new Claim(ClaimTypes.Name, userName),
-                new Claim(ClaimTypes.NameIdentifier, idUser)
+                new Claim("userId", userId)
             };
 
                 var credentials = new SigningCredentials(

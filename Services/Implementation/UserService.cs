@@ -10,6 +10,7 @@ using Amazon.DynamoDBv2.DocumentModel;
 using System.Net.Http;
 using System.Text.Json;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using projetoGloboClima.Models.ViewModels;
 
 namespace projetoGloboClima.Services.Implementation
 {
@@ -48,17 +49,31 @@ namespace projetoGloboClima.Services.Implementation
             {
                 var token = _tokenGenerator.GenerateToken(user.Email, user.Name, user.UserId);
 
-                return new AuthResult
+    
+                AuthResult authResult = new AuthResult
                 {
                     User = user,
                     Token = token
                 };
+
+
+
+
+                return authResult;
+
             }
 
             return null; 
         }
 
+        public async Task<bool> AddFavoriteCity(string usuarioId, WeatherViewModel model)
+        {
+            if (string.IsNullOrEmpty(usuarioId) || model == null)
+                return false;
 
+            bool retorno = await _userRepository.AddFavoriteCity(usuarioId, model);
+            return retorno;
+        }
 
     }
 }

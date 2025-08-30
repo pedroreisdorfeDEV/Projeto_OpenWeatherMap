@@ -18,10 +18,10 @@ namespace projetoGloboClima.Shared.Utils
 
             var claims = new[]
             {
-            new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Name, userName),
-            new Claim(ClaimTypes.NameIdentifier, userId)
-        };
+                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.Name, userName),
+                new Claim("userId", userId)
+            };
 
             var credentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),

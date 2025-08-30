@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using projetoGloboClima.Infrastructure.Interfaces;
 using projetoGloboClima.Models.Entities;
@@ -29,7 +31,7 @@ namespace projetoGloboClima.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Logar( LoginRequestViewModel login)
+        public async Task<IActionResult> Logar(LoginRequestViewModel login)
         {
             try
             {
@@ -37,9 +39,16 @@ namespace projetoGloboClima.Controllers
 
                 if (authResult == null)
                 {
-                    ModelState.AddModelError("", "E-mail ou senha inválidos");
-                    return View();
+                    ViewBag.PopupMensagem = "E-mail ou senha inválidos!";
+                    return View("Login");
                 }
+
+                HttpContext.Response.Cookies.Append("jwtToken", authResult.Token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = false, // true em produção
+                    SameSite = SameSiteMode.Strict
+                });
 
                 HttpContext.Session.SetString("Token", authResult.Token);
                 HttpContext.Session.SetString("UserName", authResult.User.Name);
@@ -51,6 +60,22 @@ namespace projetoGloboClima.Controllers
             {
                 return _outPutPort.InvalidRequest();
             }
+        }
+
+        [Authorize] ///!!!Somente usuários autenticados
+        [HttpPost]
+        public async Task<IActionResult> Favorite(WeatherViewModel model)
+        {
+            var usuarioId = User.FindFirst("userId")?.Value;
+            if (string.IsNullOrEmpty(usuarioId))
+                return Unauthorized();
+
+            bool sucesso = await _userService.AddFavoriteCity(usuarioId, model);
+
+            if (sucesso)
+                return RedirectToAction("IndexWeather", "Weather");
+
+            return BadRequest("Não foi possível favoritar a cidade.");
         }
     }
 }

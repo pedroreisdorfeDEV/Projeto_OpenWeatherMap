@@ -3,6 +3,7 @@ using Amazon.DynamoDBv2.DocumentModel;
 using Microsoft.AspNetCore.Mvc;
 using projetoGloboClima.Infrastructure.Interfaces;
 using projetoGloboClima.Models.Entities;
+using projetoGloboClima.Models.ViewModels;
 using projetoGloboClima.Services.Implementation;
 using projetoGloboClima.Services.Interfaces;
 using projetoGloboClima.Shared.OutPut;
@@ -18,6 +19,7 @@ namespace projetoGloboClima.Infrastructure.Repositories
         {
             _context = context;
         }
+
 
         public async Task<UserEntity?> GetLogin(string email, string senha)
         {
@@ -43,9 +45,36 @@ namespace projetoGloboClima.Infrastructure.Repositories
 
                 throw;
             }
+        }
 
-            //string senhaSHA512 = Shared.Utils.Hash.GerarHashSHA512(senha).ToUpper();
 
+        public async Task<bool> AddFavoriteCity(string userId, WeatherViewModel model)
+        {
+            try
+            {
+                var favorito = new FavoriteCity
+                {
+                    UserId = userId,
+                    Cidade = model.Cidade,
+                    Pais = model.Pais,
+                    Temperatura = model.Temperatura,
+                    SensacaoTermica = model.SensacaoTermica,
+                    TempMin = model.TempMin,
+                    TempMax = model.TempMax,
+                    Umidade = model.Umidade,
+                    Condicao = model.Condicao,
+                    VelocidadeVento = model.VelocidadeVento,
+                    Nebulosidade = model.Nebulosidade,
+                    DataFavorito = DateTime.UtcNow
+                };
+
+                await _context.SaveAsync(favorito);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
     }
 }

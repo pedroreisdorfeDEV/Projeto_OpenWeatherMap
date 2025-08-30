@@ -20,3 +20,10 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.buttons_back_addafav {
+    display: flex;
+    flex-direction: column; /* força empilhar verticalmente */
+    gap: 10px; /* espaçamento entre os botões */
+    width: fit-content; /* opcional, para não ocupar 100% da linha */
+}

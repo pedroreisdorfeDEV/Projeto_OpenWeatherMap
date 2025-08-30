@@ -20,5 +20,27 @@
     </div>
 
     <br />
-    <a asp-controller="Weather" asp-action="IndexWeather" class="btn btn-secondary">Voltar</a>
+    <div class="buttons_back_addafav">   
+        <form asp-controller="User" asp-action="Favorite" method="post">
+            <input type="hidden" name="Cidade" value="@Model.Cidade" />
+            <input type="hidden" name="Pais" value="@Model.Pais" />
+            <input type="hidden" name="Temperatura" value="@Model.Temperatura" />
+            <input type="hidden" name="SensacaoTermica" value="@Model.SensacaoTermica" />
+            <input type="hidden" name="TempMin" value="@Model.TempMin" />
+            <input type="hidden" name="TempMax" value="@Model.TempMax" />
+            <input type="hidden" name="Umidade" value="@Model.Umidade" />
+            <input type="hidden" name="Condicao" value="@Model.Condicao" />
+            <input type="hidden" name="VelocidadeVento" value="@Model.VelocidadeVento" />
+            <input type="hidden" name="Nebulosidade" value="@Model.Nebulosidade" />
+
+            <button type="submit" class="btn btn-warning" value="Favorite">
+                <i class="fa fa-star"></i> Favoritar
+            </button>
+        </form>
+
+        <a asp-controller="Weather" asp-action="IndexWeather" class="btn btn-secondary">Voltar</a>
+    </div>
+    
 </div>
+
+

@@ -1,5 +1,6 @@
 ﻿using projetoGloboClima.Infrastructure.Interfaces;
 using projetoGloboClima.Models.Entities;
+using projetoGloboClima.Models.ViewModels;
 using System.Net.Http;
 using System.Text.Json;
 
@@ -16,8 +17,10 @@ namespace projetoGloboClima.Infrastructure.Repositories
             _apiKey = configuration["OpenWeatherMap:ApiKey"];
         }
 
+
         public async Task<WeatherResponse?> GetWeatherAsync(double lat, double lon)
         {
+
             var url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={_apiKey}&units=metric&lang=pt_br";
             var response = await _httpClient.GetAsync(url);
 
@@ -66,5 +69,7 @@ namespace projetoGloboClima.Infrastructure.Repositories
                 throw;
             }
         }
+
+
     }
 }

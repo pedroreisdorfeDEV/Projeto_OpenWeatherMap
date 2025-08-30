@@ -1,4 +1,4 @@
-﻿@model projetoGloboClima.Models.Entities.UserEntity
+﻿@* @model projetoGloboClima.Models.Entities.UserEntity *@
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,27 +23,35 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Página Inicial</a>
                         </li>
- 
-                        <li class="nav-item">
-                            @{
-                                var userName = Context.Session.GetString("UserName");
-                                var token = Context.Session.GetString("Token");
-                            }
-                        <li class="nav-item">
-                            @if (!string.IsNullOrEmpty(userName))
-                            {
-                            <a class="nav-link text-dark linkColor" asp-area="" asp-controller="Home" asp-action="Index">
-                                Olá, @userName
-                            </a>
-                            }
-                            else
-                            {
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
-                            }
-                        </li>
 
 
-                        </li>
+                        @{
+                            var userName = Context.Session.GetString("UserName");
+                            var token = Context.Session.GetString("Token");
+                        }
+
+                        @if (!string.IsNullOrEmpty(userName))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark linkColor" asp-area="" asp-controller="Home" asp-action="Index">
+                                    Olá, @userName
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark linkColor" asp-area="" asp-controller="Weather" asp-action="IndexWeather">
+                                    Globo Clima
+                                </a>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                            </li>
+                        }
+
+
 
                     </ul>
                 </div>

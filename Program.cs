@@ -56,6 +56,7 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
 // Serviços da aplicação
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 builder.Services.AddScoped<IOutputPort, OutPutPort>();
 builder.Services.AddScoped<JwtTokenGenerator>();
 builder.Services.AddScoped<HttpClient>();

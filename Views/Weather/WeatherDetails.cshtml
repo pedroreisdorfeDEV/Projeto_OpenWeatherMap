@@ -1,0 +1,24 @@
+﻿@model projetoGloboClima.Models.ViewModels.WeatherViewModel
+
+@{
+    ViewData["Title"] = "Clima Atual";
+}
+
+<div class="container mt-4">
+    <h2>Clima em @Model.Cidade - @Model.Pais</h2>
+    <hr />
+
+    <div class="card p-3 shadow-sm">
+        <p><strong>Temperatura:</strong> @Model.Temperatura °C</p>
+        <p><strong>Sensação Térmica:</strong> @Model.SensacaoTermica °C</p>
+        <p><strong>Temperatura Mínima:</strong> @Model.TempMin °C</p>
+        <p><strong>Temperatura Máxima:</strong> @Model.TempMax °C</p>
+        <p><strong>Umidade:</strong> @Model.Umidade %</p>
+        <p><strong>Condição:</strong> @Model.Condicao</p>
+        <p><strong>Vento:</strong> @Model.VelocidadeVento m/s</p>
+        <p><strong>Nebulosidade:</strong> @Model.Nebulosidade %</p>
+    </div>
+
+    <br />
+    <a asp-controller="Weather" asp-action="IndexWeather" class="btn btn-secondary">Voltar</a>
+</div>

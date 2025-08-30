@@ -6,6 +6,7 @@ using projetoGloboClima.Models.Entities;
 using projetoGloboClima.Services.Implementation;
 using projetoGloboClima.Services.Interfaces;
 using projetoGloboClima.Shared.OutPut;
+using projetoGloboClima.Shared.Utils;
 
 namespace projetoGloboClima.Infrastructure.Repositories
 {
@@ -34,15 +35,8 @@ namespace projetoGloboClima.Infrastructure.Repositories
                 var search = _context.ScanAsync<UserEntity>(conditions);
                
                 var results = await search.GetNextSetAsync();
-                if (results.Count() > 0)
-                {
-                    userEntity = results[0];
-                    return userEntity;
-                }
-                else
-                {
-                    return null;
-                }
+
+                return results.Count > 0 ? results[0] : null;
             }
             catch (Exception e)
             {

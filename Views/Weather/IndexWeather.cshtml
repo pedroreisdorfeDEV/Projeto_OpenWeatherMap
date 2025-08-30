@@ -1,0 +1,49 @@
+﻿@model projetoGloboClima.Models.ViewModels.CitySearchViewModel
+
+@{
+    ViewData["Title"] = "Globo Clima";
+}
+
+<h2>Buscar Clima</h2>
+
+<!-- Formulário de busca -->
+<form asp-controller="Weather" asp-action="SearchCities" method="get">
+    <div class="form-group">
+        <label for="cidade">Digite o nome da cidade:</label>
+        <input asp-for="City" type="text" class="form-control" id="cidade" required />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
+
+<hr />
+
+<!-- Se existirem cidades retornadas -->
+@if (Model != null && Model.Cities != null && Model.Cities.Any())
+{
+    <h3>Escolha a cidade:</h3>
+    <ul class="list-group">
+        @foreach (var city in Model.Cities)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>
+                    @city.Name
+                    @if (!string.IsNullOrEmpty(city.State))
+                    {
+                        <text> - @city.State</text>
+                    }
+                    (@city.Country)
+                </span>
+
+                <!-- Chama GetWeather passando lat/lon -->
+                <a asp-controller="Weather"
+                   asp-action="GetWeather"
+                   asp-route-lat="@city.Lat.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                   asp-route-lon="@city.Lon.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                   class="btn btn-sm btn-success">
+                    Ver Clima
+                </a>
+            </li>
+        }
+    </ul>
+}

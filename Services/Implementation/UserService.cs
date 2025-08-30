@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using projetoGloboClima.Shared.OutPut;
 using projetoGloboClima.Shared.Utils;
 using Amazon.DynamoDBv2.DocumentModel;
+using System.Net.Http;
+using System.Text.Json;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 
 namespace projetoGloboClima.Services.Implementation
 {
@@ -39,22 +42,10 @@ namespace projetoGloboClima.Services.Implementation
 
         public async Task<AuthResult?> LoginAndGenerateToken(string email, string password)
         {
-            string senhaHash = Hash.GerarHashSHA512(password).ToUpper();
+            UserEntity? user = await _userRepository.GetLogin(email, password);
 
-            var conditions = new List<ScanCondition>
-                {
-                    new ScanCondition("Email", ScanOperator.Equal, email),
-                    new ScanCondition("Password", ScanOperator.Equal, senhaHash)
-                };
-
-            var search = _context.ScanAsync<UserEntity>(conditions);
-            var results = await search.GetNextSetAsync();
-
-            if (results.Count > 0)
+            if (user != null)
             {
-                UserEntity user = results[0];
-
-                // Gera token
                 var token = _tokenGenerator.GenerateToken(user.Email, user.Name, user.UserId);
 
                 return new AuthResult
@@ -64,8 +55,10 @@ namespace projetoGloboClima.Services.Implementation
                 };
             }
 
-            return null; // usuário não encontrado
+            return null; 
         }
+
+
 
     }
 }

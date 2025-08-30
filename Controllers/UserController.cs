@@ -24,7 +24,7 @@ namespace projetoGloboClima.Controllers
         }
         public IActionResult Login()
         {
-            return View(); // procura por Views/User/Login.cshtml
+            return View(); 
         }
 
 
@@ -33,7 +33,6 @@ namespace projetoGloboClima.Controllers
         {
             try
             {
-                string teste = await _weatherService.GetWeatherByCity("London");
                 var authResult = await _userService.LoginAndGenerateToken(login.Email, login.Password);
 
                 if (authResult == null)
@@ -42,7 +41,6 @@ namespace projetoGloboClima.Controllers
                     return View();
                 }
 
-                // Salvar informações do usuário na sessão ou cookie se precisar
                 HttpContext.Session.SetString("Token", authResult.Token);
                 HttpContext.Session.SetString("UserName", authResult.User.Name);
 

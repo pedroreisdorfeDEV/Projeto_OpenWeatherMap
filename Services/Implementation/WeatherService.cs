@@ -17,15 +17,15 @@ namespace projetoGloboClima.Services.Implementation
             _weatherRepository = weatherRepository;
         }
 
-        public async Task<List<CityResult>> SearchCitiesAsync(string cityName)
+        public async Task<List<CityResult>?> SearchCitiesAsync(string cityName)
         {
             if (string.IsNullOrWhiteSpace(cityName))
-                throw new ArgumentException("O nome da cidade não pode ser vazio.");
+                return null;
 
             var cities = await _weatherRepository.SearchCitiesAsync(cityName);
 
             if (cities == null || cities.Count == 0)
-                throw new KeyNotFoundException("Nenhuma cidade encontrada.");
+                return null;
 
             List<CityResult> listCities = new List<CityResult>();
             cities.RemoveAll(x => x.Name != cityName);

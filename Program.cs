@@ -56,8 +56,6 @@ builder.Services.AddAuthentication(options =>
 });
 
 
-
-
 // DynamoDB
 builder.Services.AddSingleton<IAmazonDynamoDB>(_ =>
 {
@@ -83,7 +81,6 @@ builder.Services.AddScoped<IOutputPort, OutPutPort>();
 builder.Services.AddScoped<JwtTokenGenerator>();
 builder.Services.AddScoped<HttpClient>();
 builder.Services.AddScoped<WeatherService>();
-builder.Services.AddScoped<ILogger>();
 
 builder.Services.AddDistributedMemoryCache(); 
 builder.Services.AddSession(options =>

@@ -7,6 +7,7 @@
     <title>@ViewData["Title"] - projetoGloboClima</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/projetoGloboClima.styles.css" asp-append-version="true" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -15,16 +16,14 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">projetoGloboClima</a>
+                @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">projetoGloboClima</a> *@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Página Inicial</a>
-                        </li>
+                      
 
                         @{
                             var userName = Context.Session.GetString("UserName");
@@ -45,12 +44,24 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark linkColor" asp-area="" asp-controller="Favorite" asp-action="Index">
-                                    Favoritos
+                                    Cidades favoritas
                                 </a>
+                            </li>
+                        
+                            <li class="nav-item ms-auto">
+                                <form asp-controller="User" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-danger d-flex align-items-center">
+                                        <span class="me-1">Sair</span>
+                                        <i class="bi bi-box-arrow-right"></i>
+                                    </button>
+                                </form>
                             </li>
                         }
                         else
                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Página Inicial</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
                             </li>
@@ -69,7 +80,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - projetoGloboClima - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - projetoGloboClima - 
         </div>
     </footer>
 
@@ -98,7 +109,6 @@
             modal.show();
         }
 
-        // Se a controller enviar mensagem via ViewBag, abre o popup
         $(document).ready(function () {
             var mensagem = @Html.Raw(System.Text.Json.JsonSerializer.Serialize((string)ViewBag.PopupMensagem));
             if (mensagem && mensagem.length > 0) {

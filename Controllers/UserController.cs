@@ -77,5 +77,52 @@ namespace projetoGloboClima.Controllers
 
             return BadRequest("Não foi possível favoritar a cidade.");
         }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear(); 
+            return RedirectToAction("Index", "Home"); 
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Register(UserViewModel model)
+        {
+            try
+            {
+                var user = new UserEntity
+                {
+                    UserId = Guid.NewGuid().ToString(),
+                    User = model.User,
+                    Name = model.Name,
+                    Email = model.Email,
+                    Password = model.Password
+                };
+
+
+                bool retorno = await _userService.CreateUser(user);
+                if (retorno)
+                {
+                    ViewBag.PopupMensagem = "Usuário cadastrado com sucesso!\nAgora você pode fazer login.";
+                }
+                else
+                {
+                    ViewBag.PopupMensagem = $"Erro ao cadastrar: {user.Name}";
+                }      
+            }
+            catch (Exception ex)
+            {
+                ViewBag.PopupMensagem = $"Erro ao cadastrar: {model.Name}";
+            }
+
+            return View("Login"); 
+        }
+
+        public IActionResult CreateUser()
+        {
+            return View();
+        }
+
     }
 }

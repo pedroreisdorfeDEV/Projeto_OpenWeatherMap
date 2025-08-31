@@ -8,6 +8,7 @@ using projetoGloboClima.Services.Implementation;
 using projetoGloboClima.Services.Interfaces;
 using projetoGloboClima.Shared.OutPut;
 using projetoGloboClima.Shared.Utils;
+using System.Reflection;
 
 namespace projetoGloboClima.Infrastructure.Repositories
 {
@@ -51,7 +52,7 @@ namespace projetoGloboClima.Infrastructure.Repositories
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Erro ao tentar login para {Email}", email);
+                _logger.LogError(e, $"Erro ao tentar login para {email}", email);
                 throw;
             }
         }
@@ -84,6 +85,21 @@ namespace projetoGloboClima.Infrastructure.Repositories
             {
                 _logger.LogError(e, $"Erro ao adicionar cidade favorita {model.Cidade} para o usuário {userId}", model.Cidade, userId);
 
+                return false;
+            }
+        }
+
+        public async Task<bool> CreateUser(UserEntity user)
+        {
+            try
+            {
+                await _context.SaveAsync(user);
+                _logger.LogInformation($"Usuário {user.Email} cadastrado com sucesso!");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Erro ao tentar cadastrar!", user.UserId);
                 return false;
             }
         }

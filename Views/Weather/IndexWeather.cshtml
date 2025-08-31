@@ -4,7 +4,7 @@
     ViewData["Title"] = "Globo Clima";
 }
 
-<h2>Buscar Clima</h2>
+<h2>Busca climática</h2>
 
 <form asp-controller="Weather" asp-action="SearchCities" method="get">
     <div class="form-group">
@@ -15,7 +15,6 @@
     <button type="submit" class="btn btn-primary">Buscar</button>
 </form>
 
-<hr />
 
 @if (Model != null && Model.Cities != null && Model.Cities.Any())
 {

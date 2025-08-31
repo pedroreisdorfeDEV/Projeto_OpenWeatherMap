@@ -3,6 +3,76 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Bem-vindo ao Globo Clima</h1>
+
+    @{
+        var userName = Context.Session.GetString("UserName");
+        var token = Context.Session.GetString("Token");
+    }
+
+    @if (!string.IsNullOrEmpty(userName))
+    {
+        <p>
+            Você pode fazer sua busca por cidade para saber informações detalhadas sobre o clima na página
+            <strong>"Globo Clima"</strong> e selecionar suas favoritas.
+        </p>
+    }
+    else
+    {
+        <p>
+            Faça seu login para ter acesso a pesquisas de clima por cidade/país.
+        </p>
+    }
+
+    <!-- Ícone de clima animado -->
+    <div class="weather-animation mt-4">
+        <img src="https://cdn-icons-png.flaticon.com/512/869/869869.png" class="sun" alt="Sol" />
+        <img src="https://cdn-icons-png.flaticon.com/512/414/414927.png" class="cloud" alt="Nuvem" />
+
+    </div>
 </div>
+
+<style>
+    .weather-animation {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        margin: auto;
+    }
+
+    .sun {
+        position: absolute;
+        width: 80px;
+        left: 60px;
+        top: 20px;
+        animation: spin 10s linear infinite;
+    }
+
+    .cloud {
+        position: absolute;
+        width: 120px;
+        top: 80px;
+        left: -150px;
+        animation: moveCloud 15s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes moveCloud {
+        0% {
+            left: -150px;
+        }
+
+        100% {
+            left: 250px;
+        }
+    }
+</style>

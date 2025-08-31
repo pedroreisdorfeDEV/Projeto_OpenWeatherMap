@@ -18,18 +18,20 @@ namespace projetoGloboClima.Services.Implementation
     {
         private readonly IUserRepository _userRepository;
         private readonly JwtTokenGenerator _tokenGenerator;
-        private readonly IDynamoDBContext _context;
 
-        public UserService(IUserRepository userRepository, JwtTokenGenerator jwtTokenGenerator, IDynamoDBContext context)
+        public UserService(IUserRepository userRepository, JwtTokenGenerator jwtTokenGenerator)
         {
             _userRepository = userRepository;
             _tokenGenerator = jwtTokenGenerator;
-            _context = context;
         }
 
-        public Task CreateUser(UserEntity user)
+        public async Task<bool> CreateUser(UserEntity user)
         {
-            throw new NotImplementedException();
+            // gera hash da senha antes de salvar
+            user.Password = Shared.Utils.Hash.GerarHashSHA512(user.Password).ToUpper();
+
+            bool retorno = await _userRepository.CreateUser(user);
+            return retorno;
         }
 
 
@@ -55,9 +57,6 @@ namespace projetoGloboClima.Services.Implementation
                     User = user,
                     Token = token
                 };
-
-
-
 
                 return authResult;
 

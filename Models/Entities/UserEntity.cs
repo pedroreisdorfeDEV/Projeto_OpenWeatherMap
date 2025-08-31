@@ -20,10 +20,5 @@ namespace projetoGloboClima.Models.Entities
         [DynamoDBProperty]
         public string Password { get; set; } = default!;
 
-        [DynamoDBProperty]
-        public List<string> CidadesFavoritas { get; set; } = new();
-
-        [DynamoDBProperty]
-        public List<string> PaisesFavoritos { get; set; } = new();
     }
 }

@@ -24,7 +24,16 @@ namespace projetoGloboClima.Controllers
         public async Task<IActionResult> SearchCities(CityRequestViewModel cityView)
         {
             var cities = await _weatherService.SearchCitiesAsync(cityView.City);
-            var citySearchViewModel = new CitySearchViewModel
+
+            if (cities == null || cities.Count == 0)
+            {
+                ViewBag.PopupMensagem = "Cidade sem informações climáticas. Refaça sua busca!";
+                return View("IndexWeather");
+            }
+
+
+
+                var citySearchViewModel = new CitySearchViewModel
             {
                 City = cityView.City,
                 Cities = cities
@@ -60,73 +69,6 @@ namespace projetoGloboClima.Controllers
             return View("WeatherDetails", viewModel);
         }
 
-        // GET: WeatherController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
-        // GET: WeatherController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: WeatherController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: WeatherController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: WeatherController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: WeatherController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: WeatherController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

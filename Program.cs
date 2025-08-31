@@ -77,10 +77,13 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
+builder.Services.AddScoped<IFavoriteCityService, FavoriteCityService>();
+builder.Services.AddScoped<IFavoriteCityRepository, FavoriteCityRepository>();;
 builder.Services.AddScoped<IOutputPort, OutPutPort>();
 builder.Services.AddScoped<JwtTokenGenerator>();
 builder.Services.AddScoped<HttpClient>();
 builder.Services.AddScoped<WeatherService>();
+builder.Services.AddScoped<ILogger>();
 
 builder.Services.AddDistributedMemoryCache(); 
 builder.Services.AddSession(options =>

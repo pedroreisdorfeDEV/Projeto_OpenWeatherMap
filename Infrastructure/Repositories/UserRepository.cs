@@ -14,10 +14,12 @@ namespace projetoGloboClima.Infrastructure.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly IDynamoDBContext _context;
+        private readonly ILogger<UserRepository> _logger;
 
-        public UserRepository(IDynamoDBContext context)
+        public UserRepository(IDynamoDBContext context, ILogger<UserRepository> logger)
         {
             _context = context;
+            _logger = logger;   
         }
 
 
@@ -38,15 +40,21 @@ namespace projetoGloboClima.Infrastructure.Repositories
                
                 var results = await search.GetNextSetAsync();
 
-                return results.Count > 0 ? results[0] : null;
+                if (results.Count > 0)
+                {
+                    _logger.LogInformation($"Login bem-sucedido para {email}", email);
+                    return results[0];
+                }
+
+                _logger.LogWarning($"Falha no login: usuário ou senha incorretos para {email}", email);
+                return null;
             }
             catch (Exception e)
             {
-
+                _logger.LogError(e, "Erro ao tentar login para {Email}", email);
                 throw;
             }
         }
-
 
         public async Task<bool> AddFavoriteCity(string userId, WeatherViewModel model)
         {
@@ -69,10 +77,13 @@ namespace projetoGloboClima.Infrastructure.Repositories
                 };
 
                 await _context.SaveAsync(favorito);
+                _logger.LogInformation($"Cidade favorita {model.Cidade} adicionada com sucesso para o usuário {userId}", model.Cidade, userId);
                 return true;
             }
             catch (Exception e)
             {
+                _logger.LogError(e, $"Erro ao adicionar cidade favorita {model.Cidade} para o usuário {userId}", model.Cidade, userId);
+
                 return false;
             }
         }

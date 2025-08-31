@@ -1,0 +1,39 @@
+﻿@model List<projetoGloboClima.Models.Entities.FavoriteCity>
+
+<h2>Cidades Favoritas</h2>
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <p>@ViewBag.Message</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Cidade</th>
+                <th>País</th>
+                <th>Temperatura</th>
+                <th>Sensação Térmica</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var city in Model)
+            {
+                <tr>
+                    <td>@city.Cidade</td>
+                    <td>@city.Pais</td>
+                    <td>@city.Temperatura °C</td>
+                    <td>@city.SensacaoTermica °C</td>
+                    <td>
+                        <form asp-controller="Favorite" asp-action="Delete" method="post">
+                            <input type="hidden" name="cidade" value="@city.Cidade" />
+                            <button type="submit" class="btn btn-danger">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

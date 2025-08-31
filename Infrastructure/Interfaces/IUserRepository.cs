@@ -9,6 +9,6 @@ namespace projetoGloboClima.Infrastructure.Interfaces
     {
         public Task<UserEntity?> GetLogin(string login, string senha);
 
-        Task<bool> AddFavoriteCity(string usuarioId, WeatherViewModel model);
+        public Task<bool> AddFavoriteCity(string usuarioId, WeatherViewModel model);
     }
 }

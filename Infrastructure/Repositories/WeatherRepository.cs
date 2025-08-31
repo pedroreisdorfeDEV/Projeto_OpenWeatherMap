@@ -1,4 +1,5 @@
-﻿using projetoGloboClima.Infrastructure.Interfaces;
+﻿using Humanizer;
+using projetoGloboClima.Infrastructure.Interfaces;
 using projetoGloboClima.Models.Entities;
 using projetoGloboClima.Models.ViewModels;
 using System.Net.Http;
@@ -10,33 +11,48 @@ namespace projetoGloboClima.Infrastructure.Repositories
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
+        private readonly ILogger<WeatherRepository> _logger;
 
-        public WeatherRepository(IConfiguration configuration)
+        public WeatherRepository(IConfiguration configuration, ILogger<WeatherRepository> logger)
         {
             _httpClient = new HttpClient();
             _apiKey = configuration["OpenWeatherMap:ApiKey"];
+            _logger = logger;
         }
 
 
         public async Task<WeatherResponse?> GetWeatherAsync(double lat, double lon)
         {
 
-            var url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={_apiKey}&units=metric&lang=pt_br";
-            var response = await _httpClient.GetAsync(url);
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                return null;
+                var url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={_apiKey}&units=metric&lang=pt_br";
+                var response = await _httpClient.GetAsync(url);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogWarning($"Falha ao buscar clima", response.StatusCode);
+
+                    return null;
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                var retorno = JsonSerializer.Deserialize<WeatherResponse>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                _logger.LogInformation($"Clima obtido com sucesso para latitude {lat} e longitude {lon}", lat, lon);
+
+                return retorno;
             }
-
-            var json = await response.Content.ReadAsStringAsync();
-
-            var retorno =  JsonSerializer.Deserialize<WeatherResponse>(json, new JsonSerializerOptions
+            catch (Exception e)
             {
-                PropertyNameCaseInsensitive = true
-            });
+                _logger.LogError(e, $"Erro ao buscar clima para latitude {lat} e longitude {lon}", e);
 
-            return retorno;
+                throw;
+            }
         }
 
         public async Task<List<CityResult>?> SearchCitiesAsync(string cityName)
@@ -50,11 +66,9 @@ namespace projetoGloboClima.Infrastructure.Repositories
                 {
                     return null;
                 }
-                //response.EnsureSuccessStatusCode();
 
                 var json = await response.Content.ReadAsStringAsync();
 
-                //List<CityResult> listCityResult = JsonSerializer.Deserialize<List<CityResult>>(json);
 
                 var retorno = JsonSerializer.Deserialize<List<CityResult>>(json, new JsonSerializerOptions
                 {
@@ -65,6 +79,7 @@ namespace projetoGloboClima.Infrastructure.Repositories
             }
             catch (Exception e)
             {
+                _logger.LogError(e, $"Erro ao buscar clima para cidades {cityName}", e);
 
                 throw;
             }

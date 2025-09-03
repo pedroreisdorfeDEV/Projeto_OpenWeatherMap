@@ -34,6 +34,30 @@ namespace projetoGloboClima.Controllers
             return View(favorites);
         }
 
+
+
+        /// <summary>
+        /// Exclui cidade favoritada
+        /// </summary>
+        [HttpPost("api/delete")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeleteApi(string Cidade)
+        {
+            string userId = User.FindFirst("userId")?.Value;
+
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(Cidade))
+                return Unauthorized();
+
+            bool retorno = await _favoriteCityService.DeleteFavoriteCity(userId, Cidade);
+            if (retorno == false)
+            {
+                return NotFound(new { message = "Não foi possível obter os dados de clima." });
+            }
+
+            return Ok(retorno);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Delete(string Cidade)
         {
@@ -46,7 +70,7 @@ namespace projetoGloboClima.Controllers
             if (retorno == false)
             {
 
-                ViewBag.Message = "Não foi possível exlcuir cidade favorita!";
+                ViewBag.Message = "Não foi possível excluir cidade favorita!";
                 RedirectToAction("Index");
             }
 

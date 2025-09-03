@@ -21,7 +21,7 @@ namespace projetoGloboClima.Infrastructure.Repositories
         }
 
 
-        public async Task<WeatherResponse?> GetWeatherAsync(double lat, double lon)
+        public async Task<WeatherResponse?> GetWeather(double lat, double lon)
         {
 
             try
@@ -55,7 +55,7 @@ namespace projetoGloboClima.Infrastructure.Repositories
             }
         }
 
-        public async Task<List<CityResult>?> SearchCitiesAsync(string cityName)
+        public async Task<List<CityResult>?> SearchCities(string cityName)
         {
             try
             {

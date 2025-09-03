@@ -5,8 +5,8 @@ namespace projetoGloboClima.Infrastructure.Interfaces
 {
     public interface IWeatherRepository
     {
-        public Task<List<CityResult>?> SearchCitiesAsync(string cityName);
-        public Task<WeatherResponse?> GetWeatherAsync(double lat, double lon);
+        public Task<List<CityResult>?> SearchCities(string cityName);
+        public Task<WeatherResponse?> GetWeather(double lat, double lon);
 
     }
 }

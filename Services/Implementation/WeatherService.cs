@@ -17,12 +17,12 @@ namespace projetoGloboClima.Services.Implementation
             _weatherRepository = weatherRepository;
         }
 
-        public async Task<List<CityResult>?> SearchCitiesAsync(string cityName)
+        public async Task<List<CityResult>?> SearchCities(string cityName)
         {
             if (string.IsNullOrWhiteSpace(cityName))
                 return null;
 
-            var cities = await _weatherRepository.SearchCitiesAsync(cityName);
+            var cities = await _weatherRepository.SearchCities(cityName);
 
             if (cities == null || cities.Count == 0)
                 return null;
@@ -34,10 +34,10 @@ namespace projetoGloboClima.Services.Implementation
         }
 
 
-        public async Task<WeatherResponse?> GetWeatherAsync(double lat, double lon)
+        public async Task<WeatherResponse?> GetWeather(double lat, double lon)
         {
 
-            WeatherResponse? weatherResponse = await _weatherRepository.GetWeatherAsync(lat, lon);
+            WeatherResponse? weatherResponse = await _weatherRepository.GetWeather(lat, lon);
 
             if (weatherResponse != null)
                 return weatherResponse;

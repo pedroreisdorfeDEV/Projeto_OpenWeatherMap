@@ -63,6 +63,9 @@ builder.Services.AddSingleton<IAmazonDynamoDB>(_ =>
     return new AmazonDynamoDBClient(RegionEndpoint.SAEast1);
 });
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 
 builder.Services.AddSingleton<IDynamoDBContext>(sp =>
@@ -100,12 +103,29 @@ var app = builder.Build(); // <-- só aqui!
 app.UseSession();
 
 
+
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseSwagger();
 
     app.UseExceptionHandler("/Home/Error");
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Projeto Globo Clima API v1");
+        options.RoutePrefix = "swagger"; // acessa em /swagger
+    });
     app.UseHsts();
+}
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Projeto Globo Clima API v1");
+        options.RoutePrefix = "swagger"; // acessa em /swagger
+    });
 }
 
 

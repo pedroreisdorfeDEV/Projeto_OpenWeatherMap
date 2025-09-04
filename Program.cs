@@ -28,6 +28,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+
 .AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false; // true em produção
@@ -63,23 +64,23 @@ builder.Services.AddSingleton<IAmazonDynamoDB>(_ =>
     return new AmazonDynamoDBClient(RegionEndpoint.SAEast1);
 });
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-
-
 builder.Services.AddSingleton<IDynamoDBContext>(sp =>
 {
     var client = sp.GetRequiredService<IAmazonDynamoDB>();
     return new DynamoDBContext(client);
 });
 
+
 // Serviços da aplicação
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 builder.Services.AddScoped<IFavoriteCityService, FavoriteCityService>();
-builder.Services.AddScoped<IFavoriteCityRepository, FavoriteCityRepository>();;
+builder.Services.AddScoped<IFavoriteCityRepository, FavoriteCityRepository>();
 builder.Services.AddScoped<IOutputPort, OutPutPort>();
 builder.Services.AddScoped<JwtTokenGenerator>();
 builder.Services.AddScoped<HttpClient>();
@@ -94,15 +95,11 @@ builder.Services.AddSession(options =>
 });
 
 
-
-
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build(); // <-- só aqui!
 
 app.UseSession();
-
-
 
 
 if (!app.Environment.IsDevelopment())
@@ -113,7 +110,7 @@ if (!app.Environment.IsDevelopment())
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Projeto Globo Clima API v1");
-        options.RoutePrefix = "swagger"; // acessa em /swagger
+        options.RoutePrefix = "swagger";
     });
     app.UseHsts();
 }
@@ -124,11 +121,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Projeto Globo Clima API v1");
-        options.RoutePrefix = "swagger"; // acessa em /swagger
+        options.RoutePrefix = "swagger"; 
     });
 }
-
-
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

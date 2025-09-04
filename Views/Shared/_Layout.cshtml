@@ -1,4 +1,5 @@
 ﻿@* @model projetoGloboClima.Models.Entities.UserEntity *@
+@using System.Security.Claims
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -23,11 +24,10 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                      
+
 
                         @{
-                            var userName = Context.Session.GetString("UserName");
-                            var token = Context.Session.GetString("Token");
+                            var userName = User.FindFirst(ClaimTypes.Name)?.Value;
                         }
 
                         @if (!string.IsNullOrEmpty(userName))

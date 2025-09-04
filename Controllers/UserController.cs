@@ -67,9 +67,6 @@ namespace projetoGloboClima.Controllers
                     SameSite = SameSiteMode.Strict
                 });
 
-                HttpContext.Session.SetString("Token", authResult.Token);
-                HttpContext.Session.SetString("UserName", authResult.User.Name);
-
                 ViewBag.UsuarioLogado = true;
                 return RedirectToAction("Index", "Home");
             }
@@ -125,14 +122,14 @@ namespace projetoGloboClima.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult LogoutApi()
         {
-            HttpContext.Session.Clear();
+            Response.Cookies.Delete("jwtToken");
             return Ok(new { message = "Logout realizado com sucesso!" });
         }
 
         [HttpPost]
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear(); 
+            Response.Cookies.Delete("jwtToken");
             return RedirectToAction("Index", "Home"); 
         }
 
